@@ -6,6 +6,6 @@ dotcloud_get_env() {
     sed -n "/$1/ s/.*: \"\(.*\)\".*/\1/p" < "$HOME/environment.json"
 }
 
-python mkadmin.py
+#python mkadmin.py
 mkdir -p /home/dotcloud/volatile/static /home/dotcloud/data/media
 python $app_name/manage.py collectstatic --noinput
