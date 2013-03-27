@@ -7,4 +7,3 @@ dotcloud_get_env() {
 }
 
 mkdir -p /home/dotcloud/volatile/static /home/dotcloud/data/media
-python $app_name/manage.py collectstatic --noinput
