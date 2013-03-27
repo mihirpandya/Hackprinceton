@@ -1,5 +1,6 @@
 www:
     type: python
+    approot: root
     prebuild: ./prebuild.sh
 db:
     type: mysql
