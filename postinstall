@@ -1,4 +1,4 @@
-app_name=hackprinceton
+app_name=root
 
 python $app_name/manage.py syncdb --noinput
 
