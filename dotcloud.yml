@@ -2,4 +2,4 @@ www:
     type: python
     prebuild: ./prebuild.sh
 db:
-	type: mysql
+    type: mysql
