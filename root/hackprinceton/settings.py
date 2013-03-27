@@ -1,25 +1,65 @@
 # Django settings for hackprinceton project.
 
+import os
+import pwd
+import json
+
+settings_dir = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+
+# os.getlogin() doesn't work for remote sessions. Not sure why. ##
+if pwd.getpwuid(os.getuid())[0] == 'dotcloud':
+    envfile = '/home/dotcloud/environment.json'
+    STATIC_ROOT = '/home/dotcloud/volatile/static/'
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, 'static/'),
+    )
+    STATICFILES_FINDERS = (
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+   #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    )
+    MEDIA_ROOT = '/home/dotcloud/data/media/'
+    MEDIA_URL = '/media/'
+
+else:
+    envfile = 'environment.json'
+    STATIC_ROOT = PROJECT_ROOT
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, 'static/'),
+    )
+    STATICFILES_FINDERS = (
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+   #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    )
+    MEDIA_ROOT = ''
+    MEDIA_URL = '/media/'
+
+with open(envfile) as f:
+  env = json.load(f)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     #('Mihir Pandya', 'mihir.m.pandya@gmail.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'hackprinceton',
+        'USER': env['DOTCLOUD_DB_MYSQL_LOGIN'],
+        'PASSWORD': env['DOTCLOUD_DB_MYSQL_PASSWORD'],
+        'HOST': env['DOTCLOUD_DB_MYSQL_HOST'],
+        'PORT': int(env['DOTCLOUD_DB_MYSQL_PORT']),
     }
 }
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
