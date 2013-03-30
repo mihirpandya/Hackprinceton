@@ -14,10 +14,17 @@ def get_hist(url):
 
 def welcome(request):
 	if request.method == 'GET':
+		t = loader.get_template('index.html')
+		c = Context({
+			'a': "test_val",
+			})
+		return HttpResponse(t.render(c))
+
+def update(request):
+	if request.method == 'GET':
 		url = request.GET.get('url')
 		t = loader.get_template('map.html')
 		hist = get_hist(url)
-		print hist
 		c = Context({
         	'hist': hist,
     	})
