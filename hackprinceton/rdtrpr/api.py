@@ -1,1 +1,2 @@
-from rdtrpr.models import Location, Wikipedia, Foursquare
+from django.http import HttpResponse
+
