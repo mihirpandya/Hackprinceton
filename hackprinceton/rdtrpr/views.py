@@ -23,7 +23,7 @@ def welcome(request):
 			})
 		return HttpResponse(t.render(c))
 
-def update(request):
+def tracker(request):
 	if request.method == 'GET':
 		url = request.GET.get('url')
 		t = loader.get_template('map.html')
