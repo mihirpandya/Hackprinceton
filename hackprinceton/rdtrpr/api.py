@@ -1,0 +1,1 @@
+from rdtrpr.models import Location, Wikipedia, Foursquare
