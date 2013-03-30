@@ -24,11 +24,13 @@ def get_foursquare(url):
 		l_id = objs[len(objs)-1]
 		try:
 			tip = ast.literal_eval(Foursquare.objects.get(l_id=l_id.l_id).tips)
-			return tip
+			result = []
+			result.append(tip['name'])
+			return result
 		except Foursquare.DoesNotExist:
-			return {}
+			return []
 	else:
-		return {}
+		return []
 
 def welcome(request):
 	t = loader.get_template('index.html')
