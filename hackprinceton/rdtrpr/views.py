@@ -28,7 +28,7 @@ def get_foursquare(url):
 			result.append(tip['name'])
 			result.append(tip['location']['city']+", "+tip['location']['country'])
 		except Foursquare.DoesNotExist:
-			return result
+			result = []
 		try:
 			data = Wikipedia.objects.get(l_id=l_id.l_id).data
 			result.append(data)
