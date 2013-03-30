@@ -86,8 +86,8 @@ def add_loc(request):
 				+ query)
 			d = json.load(resp)
 			
+			fsq = None
 			if len(d['response']['venues']) > 0:
-				print d['response']['venues'][0]['name']
 				fsq_lat_err = \
 					abs(float(d['response']['venues'][0]['location']['lat']) \
 					- float(loc.latitude))
@@ -96,10 +96,53 @@ def add_loc(request):
 					- float(loc.longitude))
 				
 				if fsq_lat_err < 0.001 and fsq_lng_err < 0.001:
+					print d['response']['venues'][0]['name']
 					fsq = Foursquare.objects.create_fsq(loc, \
 						d['response']['venues'][0])
-					fsq.save()			
+					fsq.save()
+					
+			# wikipedia
+			query = urllib.urlencode(dict(lat = str(loc.latitude), lng = \
+				str(loc.longitude), radius = '100', limit = '3'))
 			
+			resp = urllib2.urlopen("http://api.wikilocation.org/articles?" \
+				+ query)
+			d = json.load(resp)
+			
+			saved = None
+			for entry in d['articles']:
+				if entry['type'] in ['airport', 'city', 'edu', 'forest', \
+					'glacier', 'isle', 'landmark', 'mountain', 'pass', \
+					'railwaystation', 'waterbody']:
+					if saved == None:
+						saved = entry
+					else:
+						if saved['distance'] == entry['distance'] and \
+							int(saved['id']) > int(entry['id']):
+							saved = entry
+							
+			if saved == None:
+				query = urllib.urlencode(dict(lat = str(loc.latitude), lng = \
+					str(loc.longitude), radius = '10000', limit = '1', type = 'city'))
+			
+				resp = urllib2.urlopen("http://api.wikilocation.org/articles?" \
+					+ query)
+				d = json.load(resp)
+				
+				if len(d['articles']) > 0:
+					saved = d['articles'][0];
+			
+			if saved != None:
+				query = "http://dbpedialite.org/things/" + saved['id']
+				resp = urllib2.urlopen(query + ".json")
+				d = json.load(resp)
+			
+				data = d[query + "#id"]\
+					["http://www.w3.org/2000/01/rdf-schema#comment"][0]["value"]
+				
+				wiki = Wikipedia.objects.create_wiki(loc, data, saved["url"])
+				wiki.save()
+						
 			response_data['result'] = 'success'
 			response_data['message'] = 'You did not mess up'
 			return HttpResponse(json.dumps(response_data), \
