@@ -30,18 +30,11 @@ def get_foursquare(url):
 
 def welcome(request):
 	if request.method == 'GET':
-		t = loader.get_template('index.html')
-		c = Context({
-			'a': "test_val",
-			})
-		return HttpResponse(t.render(c))
-
-def tracker(request):
-	if request.method == 'GET':
 		url = request.GET.get('url')
 		t = loader.get_template('map.html')
 		hist = get_hist(url)
 		foursquare = get_foursquare(url)
+
 		c = Context({
         	'hist': hist,
         	'foursquare': [],
@@ -51,7 +44,6 @@ def tracker(request):
 		
 def start(request):
 	if request.method == 'POST':
-		response_data = {}
 		# generate id
 		
 		while True:
@@ -63,10 +55,7 @@ def start(request):
 			except ObjectDoesNotExist:
 				break
 		
-		print turl
-		response_data['result'] = 'success';
-		response_data['url'] = turl;
-		return HttpResponse(json.dumps(response_data), \
+		return HttpResponse(turl, \
 			content_type="application/json")
     
 def add_loc(request):
