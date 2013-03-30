@@ -18,7 +18,7 @@
         }
         var myLatLng = new google.maps.LatLng(latCen, lngCen);
         var mapOptions = {
-          zoom: 3,
+          zoom: 8,
           center: myLatLng,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -50,9 +50,11 @@
         flightPath2.setMap(map);
 
         xmlhttp=new XMLHttpRequest();
-        xmlhttp.open("GET", "https://api.foursquare.com/v2/venues/search?ll=" + history[history.length-1][0] + "," + history[history.length-1][1] + "&intent=browse&radius=800&client_id=NTXGIW3A3ZUDBWKYT1EHHSJZF35KU2W0U4Z5ZAR5GUAYGHXI&client_secret=SQ0CZIH4X4FJLZOHBGPUQHPPQDJBZMOT2MFW5DP3P3JPMVZ2&v=20130330", false);
-        xmlhttp.send();
-        console.log(xmlhttp.responseText);
+        if(history.length > 0) {
+          xmlhttp.open("GET", "https://api.foursquare.com/v2/venues/search?ll=" + history[history.length-1][0] + "," + history[history.length-1][1] + "&intent=browse&radius=800&client_id=NTXGIW3A3ZUDBWKYT1EHHSJZF35KU2W0U4Z5ZAR5GUAYGHXI&client_secret=SQ0CZIH4X4FJLZOHBGPUQHPPQDJBZMOT2MFW5DP3P3JPMVZ2&v=20130330", false);
+          xmlhttp.send();
+          //console.log(xmlhttp.responseText);
+        }
       }
     </script>
   </head>
@@ -61,6 +63,18 @@
     <div id="information">
       <div id="foursquare">
         <script>console.log("{{foursquare}}")</script>
+        {% block content %}
+          {% for key, value in foursquare %}
+          <tr>
+            <td>
+              <p>{{ key }}</p>
+            </td>
+            <td>
+              <p>{{ value }}</p>
+            </td>
+          </tr>
+          {% endfor %}
+          {% endblock %}
       </div>
       <div id="wikipedia">
       </div>
