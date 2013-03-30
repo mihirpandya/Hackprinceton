@@ -26,7 +26,11 @@ def get_foursquare(url):
 		try:
 			tip = ast.literal_eval(Foursquare.objects.get(l_id=l_id.l_id).tips)
 			result.append(tip['name'])
-			result.append(tip['location']['city']+", "+tip['location']['country'])
+			if 'location' in tip.keys() and 'city' in tip['location'].keys() \
+				and 'country' in tip['location'].keys():
+				result.append(tip['location']['city']+", "+tip['location']['country'])
+			else:
+				result.append("")
 		except Foursquare.DoesNotExist:
 			result = []
 		try:
