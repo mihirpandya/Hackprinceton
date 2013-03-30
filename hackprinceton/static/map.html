@@ -7,7 +7,6 @@
     <link href="static/css/maps.css" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script>
-
       function initialize() {
         var history = {{hist}}
         var latCen = 0
@@ -28,19 +27,20 @@
 
         var i = 0
 
+        var ghistory = []
         for (i=0; i < history.length; i++) {
-          history[i] = new google.maps.LatLng(history[i][0], history[i][1])
+          ghistory[i] = new google.maps.LatLng(history[i][0], history[i][1])
         }
       
         var flightPath1 = new google.maps.Polyline({
-          path: history.slice(0, history.length-1),
+          path: ghistory.slice(0, ghistory.length-1),
           strokeColor: '#0000FF',
           strokeOpacity: 1.0,
           strokeWeight: 2
         });
 
         var flightPath2 = new google.maps.Polyline({
-          path: history.slice(history.length-2, history.length),
+          path: ghistory.slice(ghistory.length-2, ghistory.length),
           strokeColor: '#FF0000',
           strokeOpacity: 1.0,
           strokeWeight: 2
@@ -48,6 +48,11 @@
 
         flightPath1.setMap(map);
         flightPath2.setMap(map);
+
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET", "https://api.foursquare.com/v2/venues/search?ll=" + history[history.length-1][0] + "," + history[history.length-1][1] + "&intent=browse&radius=800&client_id=NTXGIW3A3ZUDBWKYT1EHHSJZF35KU2W0U4Z5ZAR5GUAYGHXI&client_secret=SQ0CZIH4X4FJLZOHBGPUQHPPQDJBZMOT2MFW5DP3P3JPMVZ2&v=20130330", false);
+        xmlhttp.send();
+        console.log(xmlhttp.responseText);
       }
     </script>
   </head>
