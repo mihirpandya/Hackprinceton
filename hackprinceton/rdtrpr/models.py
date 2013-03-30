@@ -1,13 +1,18 @@
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 
 # Create your models here.
 
 class LocationManager(models.Manager):
-    def create_loc(self, lat, lon, url):
-        loc = self.create(longitude = lon, latitude = lat, url = url, \
-            time = datetime.now())
-        return loc
+	def create_loc(self, lat, lon, url):
+		loc = self.create(longitude = lon, latitude = lat, url = url, \
+			time = timezone.now())
+		return loc
+		
+class FoursquareManager(models.Manager):
+	def create_fsq(self, lid, data):
+		fsq = self.create(l_id = lid, tips = data, weather = "n/a")
+		return fsq
 
 class Location(models.Model):
 	l_id = 	models.AutoField(primary_key=True)
@@ -28,3 +33,4 @@ class Foursquare(models.Model):
 	l_id = models.ForeignKey(Location)
 	tips = models.TextField()
 	weather = models.TextField()
+	objects = FoursquareManager()
