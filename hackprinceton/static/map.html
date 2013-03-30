@@ -7,6 +7,19 @@
     <link href="static/css/maps.css" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script>
+      function getBoundsZoomLevel(minLat, maxLat, minLng, maxLng, height, width) {
+        var GLOBE_HEIGHT = 256;
+        var GLOBE_WIDTH = 256;
+
+        var latAngle = maxLat - minLat;
+        var lngAngle = maxLng - minLng;
+
+        var latZoomLevel = Math.floor(Math.log(height * 360 / latAngle / GLOBE_HEIGHT) / Math.LN2);
+        var lngZoomLevel = Math.floor(Math.log(width * 360 / lngAngle / GLOBE_WIDTH) / Math.LN2);
+
+        return (latZoomLevel < lngZoomLevel) ? latZoomLevel : lngZoomLevel;
+      }
+
       function initialize() {
         var history = {{hist}}
         var latCen = 0
@@ -17,8 +30,22 @@
           lngCen = (history[0][1] + history[history.length-1][1])/2
         }
         var myLatLng = new google.maps.LatLng(latCen, lngCen);
+        calc minLat, maxLat, minLng, maxLng;
+        var lats = []
+        for (i = 0; i < history.length; i++) {
+          lats[i] = history[i][0]
+        }
+        var lngs = []
+        for (i = 0; i < history.length; i++) {
+          lngs[i] = history[i][1]
+        }
+        var minLat = Math.min.apply(Math, lats);
+        val maxLat = Math.max.apply(Math, lats);
+        val minLng = Math.min.apply(Math, lngs);
+        val maxLng = Math.max.apply(Math, lngs);
+
         var mapOptions = {
-          zoom: 8,
+          zoom: getBoundsZoomLevel(minLat, maxLat, minLng, maxLng, window.innerHeight, window.innerWidth),
           center: myLatLng,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
