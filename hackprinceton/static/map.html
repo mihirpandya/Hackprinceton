@@ -13,12 +13,12 @@
         var lngCen = 0
         if(history.length > 0) {
           console.log(history)
-          latCen = (history[0][0] + history[history.length-1][0])/2
-          lngCen = (history[0][1] + history[history.length-1][1])/2
+          latCen = history[history.length-1][0]
+          lngCen = history[history.length-1][1]
         }
         var myLatLng = new google.maps.LatLng(latCen, lngCen);
         var mapOptions = {
-          zoom: 8,
+          zoom: 16,
           center: myLatLng,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -62,12 +62,16 @@
     <div id="map-canvas"></div>
     <div id="information">
       <div id="data">
+        <div class="acutal_info">
+        <h1>You're near...</h1>
         <script>console.log({{data}})</script>
         {% block content %}
           {% for el in data %}
           <p>{{el}}</p>
           {% endfor %}
           {% endblock %}
+        </div>
+        <img id="credit-foursquare" src="static/images/foursquare.png" width="16" height="16"/>
       </div>
       </div>
     </div>
