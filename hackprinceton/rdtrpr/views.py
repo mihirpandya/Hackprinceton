@@ -16,18 +16,19 @@ def get_hist(url):
 		return []
 
 # returns latest tips attribute for corresponding URL
-"""def get_foursquare(url):
+def get_foursquare(url):
 	objs = Location.objects.filter(url=url)
 	if(len(objs) > 0):
 		objs = Location.objects.filter(url=url)
 		l_id = objs[len(objs)-1]
 		try:
-			tip = Foursquare.objects.get(l_id=f_id).tips
-			return tip
+			tip = Foursquare.objects.get(l_id=l_id.l_id).tips
+			result = tip['response']['venues'][0]
+			return result
 		except Foursquare.DoesNotExist:
 			return {}
 	else:
-		return {}"""
+		return {}
 
 def welcome(request):
 	t = loader.get_template('index.html')
@@ -39,11 +40,11 @@ def tracker(request):
 		url = request.GET.get('url')
 		t = loader.get_template('map.html')
 		hist = get_hist(url)
-		#foursquare = get_foursquare(url)
+		foursquare = get_foursquare(url)
 
 		c = Context({
         	'hist': hist,
-        	'foursquare': [],
+        	'foursquare': foursquare,
         	'wikipedia': [],
     	})
 		return HttpResponse(t.render(c))
