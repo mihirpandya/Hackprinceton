@@ -9,33 +9,41 @@
     <script>
 
       function initialize() {
-        var myLatLng = new google.maps.LatLng(0, -180);
+        var history = {{hist}}
+        console.log(history)
+        var latCen = (history[0][0] + history[history.length-1][0])/2
+        var lngCen = (history[0][1] + history[history.length-1][1])/2
+        var myLatLng = new google.maps.LatLng(latCen, lngCen);
         var mapOptions = {
           zoom: 3,
           center: myLatLng,
-          mapTypeId: google.maps.MapTypeId.TERRAIN
+          mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-        var history = {{hist}}
-
         var i = 0
 
         for (i=0; i < history.length; i++) {
- 
-          console.log(history[i])
           history[i] = new google.maps.LatLng(history[i][0], history[i][1])
         }
       
-        var flightPath = new google.maps.Polyline({
-          path: history,
+        var flightPath1 = new google.maps.Polyline({
+          path: history.slice(0, history.length-1),
+          strokeColor: '#00FF00',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        var flightPath2 = new google.maps.Polyline({
+          path: history.slice(history.length-2, history.length),
           strokeColor: '#FF0000',
           strokeOpacity: 1.0,
           strokeWeight: 2
         });
 
-        flightPath.setMap(map);
+        flightPath1.setMap(map);
+        flightPath2.setMap(map);
       }
     </script>
   </head>
