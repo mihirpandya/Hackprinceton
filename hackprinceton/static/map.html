@@ -11,8 +11,8 @@
         var GLOBE_HEIGHT = 256;
         var GLOBE_WIDTH = 256;
 
-        var latAngle = maxLat - minLat;
-        var lngAngle = maxLng - minLng;
+        var latAngle = (maxLat - minLat);
+        var lngAngle = (maxLng - minLng);
 
         var latZoomLevel = Math.floor(Math.log(height * 360 / latAngle / GLOBE_HEIGHT) / Math.LN2);
         var lngZoomLevel = Math.floor(Math.log(width * 360 / lngAngle / GLOBE_WIDTH) / Math.LN2);
@@ -22,14 +22,7 @@
 
       function initialize() {
         var history = {{hist}}
-        var latCen = 0
-        var lngCen = 0
-        if(history.length > 0) {
-          console.log(history)
-          latCen = history[history.length-1][0]
-          lngCen = history[history.length-1][1]
-        }
-        var myLatLng = new google.maps.LatLng(latCen, lngCen);
+
         var lats = []
         for (i = 0; i < history.length; i++) {
           lats[i] = history[i][0]
@@ -43,8 +36,13 @@
         var minLng = Math.min.apply(Math, lngs);
         var maxLng = Math.max.apply(Math, lngs);
 
+        var latCen = (minLat + maxLat)/2
+        var lngCen = (minLng + maxLng)/2
+
+        var myLatLng = new google.maps.LatLng(latCen, lngCen);
+
         var mapOptions = {
-          zoom: getBoundsZoomLevel(minLat, maxLat, minLng, maxLng, window.innerHeight, window.innerWidth),
+          zoom: getBoundsZoomLevel(minLat, maxLat, minLng, maxLng, window.innerHeight, window.innerWidth)-1,
           center: myLatLng,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
