@@ -7,6 +7,7 @@ import urllib
 import urllib2
 import random
 import string
+import ast
 
 def get_hist(url):
 	try:
@@ -16,18 +17,21 @@ def get_hist(url):
 		return []
 
 # returns latest tips attribute for corresponding URL
-"""def get_foursquare(url):
+def get_foursquare(url):
 	objs = Location.objects.filter(url=url)
 	if(len(objs) > 0):
 		objs = Location.objects.filter(url=url)
 		l_id = objs[len(objs)-1]
 		try:
-			tip = Foursquare.objects.get(l_id=f_id).tips
-			return tip
+			tip = ast.literal_eval(Foursquare.objects.get(l_id=l_id.l_id).tips)
+			result = []
+			result.append(tip['name'])
+			result.append(tip['location']['city']+", "+tip['location']['country'])
+			return result
 		except Foursquare.DoesNotExist:
-			return {}
+			return []
 	else:
-		return {}"""
+		return []
 
 def welcome(request):
 	t = loader.get_template('index.html')
@@ -39,12 +43,11 @@ def tracker(request):
 		url = request.GET.get('url')
 		t = loader.get_template('map.html')
 		hist = get_hist(url)
-		#foursquare = get_foursquare(url)
-
+		foursquare = get_foursquare(url)
+		print foursquare
 		c = Context({
         	'hist': hist,
-        	'foursquare': [],
-        	'wikipedia': [],
+        	'data': foursquare,
     	})
 		return HttpResponse(t.render(c))
 		
