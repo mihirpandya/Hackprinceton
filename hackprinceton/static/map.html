@@ -30,7 +30,6 @@
           lngCen = history[history.length-1][1]
         }
         var myLatLng = new google.maps.LatLng(latCen, lngCen);
-        calc minLat, maxLat, minLng, maxLng;
         var lats = []
         for (i = 0; i < history.length; i++) {
           lats[i] = history[i][0]
@@ -40,9 +39,9 @@
           lngs[i] = history[i][1]
         }
         var minLat = Math.min.apply(Math, lats);
-        val maxLat = Math.max.apply(Math, lats);
-        val minLng = Math.min.apply(Math, lngs);
-        val maxLng = Math.max.apply(Math, lngs);
+        var maxLat = Math.max.apply(Math, lats);
+        var minLng = Math.min.apply(Math, lngs);
+        var maxLng = Math.max.apply(Math, lngs);
 
         var mapOptions = {
           zoom: getBoundsZoomLevel(minLat, maxLat, minLng, maxLng, window.innerHeight, window.innerWidth),
