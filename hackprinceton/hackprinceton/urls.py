@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('django.views.generic.simple',
 	url(r'^$', view=welcome, name='hello_page'),
-    url(r'^add_loc/$', view=add_loc, name='add_loc_api'),
+    url(r'^api/add_loc/$', view=add_loc, name='add_loc_api'),
     # Examples:
     # url(r'^$', 'hackprinceton.views.home', name='home'),
     # url(r'^hackprinceton/', include('hackprinceton.foo.urls')),

@@ -1,11 +1,12 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
 class LocationManager(models.Manager):
-    def create_loc(self, id, lat, long, url, time):
-        loc = self.create(l_id = id, longitude = long, latitude = lat, url = url, time = time)
-        
+    def create_loc(self, lat, lon, url):
+        loc = self.create(longitude = lon, latitude = lat, url = url, \
+            time = datetime.now())
         return loc
 
 class Location(models.Model):
