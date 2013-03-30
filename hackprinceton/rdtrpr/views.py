@@ -15,6 +15,19 @@ def get_hist(url):
 	except Location.DoesNotExist:
 		return []
 
+# returns latest tips attribute for corresponding URL
+def get_foursquare(url):
+	try:
+		objs = Location.objects.filter(url=url)
+		l_id = objs[-1]
+		try:
+			tip = Foursquare.objects.get(l_id=f_id).tips
+			return 
+		except Foursquare.DoesNotExist:
+			return {}
+	except Location.DoesNotExist:
+		return {}
+
 def welcome(request):
 	if request.method == 'GET':
 		t = loader.get_template('index.html')
@@ -28,8 +41,11 @@ def tracker(request):
 		url = request.GET.get('url')
 		t = loader.get_template('map.html')
 		hist = get_hist(url)
+		foursquare = get_foursquare(url)
 		c = Context({
         	'hist': hist,
+        	'foursquare': [],
+        	'wikipedia': [],
     	})
 		return HttpResponse(t.render(c))
 		
