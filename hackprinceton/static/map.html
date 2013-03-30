@@ -10,9 +10,13 @@
 
       function initialize() {
         var history = {{hist}}
-        console.log(history)
-        var latCen = (history[0][0] + history[history.length-1][0])/2
-        var lngCen = (history[0][1] + history[history.length-1][1])/2
+        var latCen = 0
+        var lngCen = 0
+        if(history.length > 0) {
+          console.log(history)
+          latCen = (history[0][0] + history[history.length-1][0])/2
+          lngCen = (history[0][1] + history[history.length-1][1])/2
+        }
         var myLatLng = new google.maps.LatLng(latCen, lngCen);
         var mapOptions = {
           zoom: 3,
