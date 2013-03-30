@@ -4,6 +4,6 @@ from django.http import HttpResponse
 def welcome(request):
 	t = loader.get_template('index.html')
 	c = Context({
-        'current_time': datetime.now(),
+        'current_time': "3PM",
     })
 	return HttpResponse(t.render(c))

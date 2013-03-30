@@ -1,10 +1,12 @@
 from django.conf.urls import patterns, include, url
+from rdtrpr.views import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('django.views.generic.simple',
+	url(r'^$', view=welcome, name='hello_page'),
     # Examples:
     # url(r'^$', 'hackprinceton.views.home', name='home'),
     # url(r'^hackprinceton/', include('hackprinceton.foo.urls')),
