@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('django.views.generic.simple',
 	url(r'^$', view=welcome, name='hello_page'),
-	url(r'^tracker', view=tracker, name='tracker'),
+	url(r'^trip', view=tracker, name='tracker'),
     url(r'^api/add_loc/$', view=add_loc, name='add_loc_api'),
     url(r'^api/start/$', view=start, name='start_api'),
     # Examples:
