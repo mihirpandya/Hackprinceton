@@ -1,9 +1,12 @@
 from django.template import Context, loader
 from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 from rdtrpr.models import *
 import json
 import urllib
 import urllib2
+import random
+import string
 
 def get_hist(url):
 	try:
@@ -29,6 +32,26 @@ def update(request):
         	'hist': hist,
     	})
 		return HttpResponse(t.render(c))
+		
+def start(request):
+	if request.method == 'POST':
+		response_data = {}
+		# generate id
+		
+		while True:
+			try:
+				turl = ''.join(random.choice(string.ascii_lowercase + \
+					string.digits) for x in range(10))
+				
+				Location.objects.get(url=turl)
+			except ObjectDoesNotExist:
+				break
+		
+		print turl
+		response_data['result'] = 'success';
+		response_data['url'] = turl;
+		return HttpResponse(json.dumps(response_data), \
+			content_type="application/json")
     
 def add_loc(request):
 	if request.method == 'POST':
