@@ -26,6 +26,7 @@ def get_foursquare(url):
 			tip = ast.literal_eval(Foursquare.objects.get(l_id=l_id.l_id).tips)
 			result = []
 			result.append(tip['name'])
+			result.append(tip['location']['city']+", "+tip['location']['country'])
 			return result
 		except Foursquare.DoesNotExist:
 			return []
@@ -46,8 +47,7 @@ def tracker(request):
 		print foursquare
 		c = Context({
         	'hist': hist,
-        	'foursquare': foursquare,
-        	'wikipedia': [],
+        	'data': foursquare,
     	})
 		return HttpResponse(t.render(c))
 		
