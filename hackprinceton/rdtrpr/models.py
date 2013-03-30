@@ -7,7 +7,7 @@ class Location(models.Model):
 	longitude = models.DecimalField(max_digits=10, decimal_places=7)
 	latitude = models.DecimalField(max_digits=10, decimal_places=7)
 	url = models.TextField()
-	time = models.DateField()
+	time = models.DateTimeField()
 
 class Wikipedia(models.Model):
 	w_id = models.AutoField(primary_key=True)
