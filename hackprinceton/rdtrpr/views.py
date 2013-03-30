@@ -19,19 +19,24 @@ def get_hist(url):
 # returns latest tips attribute for corresponding URL
 def get_foursquare(url):
 	objs = Location.objects.filter(url=url)
+	result = []
 	if(len(objs) > 0):
 		objs = Location.objects.filter(url=url)
 		l_id = objs[len(objs)-1]
 		try:
 			tip = ast.literal_eval(Foursquare.objects.get(l_id=l_id.l_id).tips)
-			result = []
 			result.append(tip['name'])
 			result.append(tip['location']['city']+", "+tip['location']['country'])
-			return result
 		except Foursquare.DoesNotExist:
-			return []
+			return result
+		try:
+			data = Wikipedia.objects.get(l_id=l_id.l_id).data
+			result.append(data)
+			return result
+		except Wikipedia.DoesNotExist:
+			return result
 	else:
-		return []
+		return result
 
 def welcome(request):
 	t = loader.get_template('index.html')
