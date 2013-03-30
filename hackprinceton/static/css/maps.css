@@ -18,3 +18,20 @@ html, body {
     height: 650px;
   }
 }
+
+#data {
+  font-family: Helvetica;
+  margin-left: 10%;
+  width: 80%;
+  background-color: #eee;
+  border-radius: 25px;
+}
+
+.acutal_info {
+  padding: 30px;
+}
+
+#credit-foursquare {
+  padding-left: 15px;
+  padding-bottom: 3px;
+}
